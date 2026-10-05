@@ -1,0 +1,7 @@
+# .Renviron - SARATHI environment variables
+# Copy this file, fill in your values, and save it as .Renviron
+# in the Sarathi/ project folder.
+# NEVER commit this file to Git.
+
+SUPABASE_URL=https://your-project-ref.supabase.co
+SUPABASE_KEY=your-server-side-key-here

@@ -1,0 +1,5 @@
+# Git ignore file for SARATHI
+.Renviron
+*.Rhistory
+*.RData
+.Rproj.user/

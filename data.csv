@@ -1,0 +1,161 @@
+bus_number,route,travel_date,timing,capacity,occupied,vacant,occupancy_percentage,rush_status
+SB-01,Railway Station - CBS - Shahgunj,2026-10-01,7:00 AM,45,38,7,84.4,Rush Hour
+SB-01,Railway Station - CBS - Shahgunj,2026-10-01,8:00 AM,45,43,2,95.6,Peak Rush
+SB-01,Railway Station - CBS - Shahgunj,2026-10-01,9:00 AM,45,40,5,88.9,Peak Rush
+SB-01,Railway Station - CBS - Shahgunj,2026-10-01,12:00 PM,45,22,23,48.9,Busy
+SB-01,Railway Station - CBS - Shahgunj,2026-10-01,1:00 PM,45,18,27,40.0,Normal
+SB-01,Railway Station - CBS - Shahgunj,2026-10-01,2:00 PM,45,15,30,33.3,Normal
+SB-01,Railway Station - CBS - Shahgunj,2026-10-01,5:00 PM,45,37,8,82.2,Rush Hour
+SB-01,Railway Station - CBS - Shahgunj,2026-10-01,6:00 PM,45,44,1,97.8,Peak Rush
+SB-01,Railway Station - CBS - Shahgunj,2026-10-01,7:00 PM,45,41,4,91.1,Peak Rush
+SB-01,Railway Station - CBS - Shahgunj,2026-10-01,8:00 PM,45,28,17,62.2,Busy
+SB-01,Railway Station - CBS - Shahgunj,2026-10-02,7:00 AM,45,36,9,80.0,Rush Hour
+SB-01,Railway Station - CBS - Shahgunj,2026-10-02,8:00 AM,45,44,1,97.8,Peak Rush
+SB-01,Railway Station - CBS - Shahgunj,2026-10-02,6:00 PM,45,43,2,95.6,Peak Rush
+SB-01,Railway Station - CBS - Shahgunj,2026-10-02,12:00 PM,45,20,25,44.4,Busy
+SB-01,Railway Station - CBS - Shahgunj,2026-10-02,2:00 PM,45,12,33,26.7,Normal
+SB-02,Aurangapura - CBS - Bajajnagar,2026-10-01,7:00 AM,50,42,8,84.0,Rush Hour
+SB-02,Aurangapura - CBS - Bajajnagar,2026-10-01,8:00 AM,50,49,1,98.0,Peak Rush
+SB-02,Aurangapura - CBS - Bajajnagar,2026-10-01,9:00 AM,50,47,3,94.0,Peak Rush
+SB-02,Aurangapura - CBS - Bajajnagar,2026-10-01,12:00 PM,50,28,22,56.0,Busy
+SB-02,Aurangapura - CBS - Bajajnagar,2026-10-01,1:00 PM,50,20,30,40.0,Normal
+SB-02,Aurangapura - CBS - Bajajnagar,2026-10-01,2:00 PM,50,16,34,32.0,Normal
+SB-02,Aurangapura - CBS - Bajajnagar,2026-10-01,5:00 PM,50,44,6,88.0,Peak Rush
+SB-02,Aurangapura - CBS - Bajajnagar,2026-10-01,6:00 PM,50,50,0,100.0,Peak Rush
+SB-02,Aurangapura - CBS - Bajajnagar,2026-10-01,7:00 PM,50,46,4,92.0,Peak Rush
+SB-02,Aurangapura - CBS - Bajajnagar,2026-10-01,8:00 PM,50,30,20,60.0,Busy
+SB-02,Aurangapura - CBS - Bajajnagar,2026-10-02,8:00 AM,50,48,2,96.0,Peak Rush
+SB-02,Aurangapura - CBS - Bajajnagar,2026-10-02,6:00 PM,50,49,1,98.0,Peak Rush
+SB-02,Aurangapura - CBS - Bajajnagar,2026-10-02,12:00 PM,50,25,25,50.0,Busy
+SB-03,Railway Station - CBS - CIDCO,2026-10-01,7:00 AM,40,32,8,80.0,Rush Hour
+SB-03,Railway Station - CBS - CIDCO,2026-10-01,8:00 AM,40,39,1,97.5,Peak Rush
+SB-03,Railway Station - CBS - CIDCO,2026-10-01,9:00 AM,40,36,4,90.0,Peak Rush
+SB-03,Railway Station - CBS - CIDCO,2026-10-01,12:00 PM,40,18,22,45.0,Busy
+SB-03,Railway Station - CBS - CIDCO,2026-10-01,1:00 PM,40,14,26,35.0,Normal
+SB-03,Railway Station - CBS - CIDCO,2026-10-01,2:00 PM,40,10,30,25.0,Normal
+SB-03,Railway Station - CBS - CIDCO,2026-10-01,5:00 PM,40,34,6,85.0,Peak Rush
+SB-03,Railway Station - CBS - CIDCO,2026-10-01,6:00 PM,40,39,1,97.5,Peak Rush
+SB-03,Railway Station - CBS - CIDCO,2026-10-01,7:00 PM,40,37,3,92.5,Peak Rush
+SB-03,Railway Station - CBS - CIDCO,2026-10-01,8:00 PM,40,22,18,55.0,Busy
+SB-03,Railway Station - CBS - CIDCO,2026-10-02,8:00 AM,40,38,2,95.0,Peak Rush
+SB-03,Railway Station - CBS - CIDCO,2026-10-02,12:00 PM,40,16,24,40.0,Normal
+SB-04,Aurangapura - CBS - Ranjangaon,2026-10-01,7:00 AM,50,40,10,80.0,Rush Hour
+SB-04,Aurangapura - CBS - Ranjangaon,2026-10-01,8:00 AM,50,48,2,96.0,Peak Rush
+SB-04,Aurangapura - CBS - Ranjangaon,2026-10-01,9:00 AM,50,45,5,90.0,Peak Rush
+SB-04,Aurangapura - CBS - Ranjangaon,2026-10-01,12:00 PM,50,27,23,54.0,Busy
+SB-04,Aurangapura - CBS - Ranjangaon,2026-10-01,1:00 PM,50,19,31,38.0,Normal
+SB-04,Aurangapura - CBS - Ranjangaon,2026-10-01,2:00 PM,50,14,36,28.0,Normal
+SB-04,Aurangapura - CBS - Ranjangaon,2026-10-01,5:00 PM,50,43,7,86.0,Peak Rush
+SB-04,Aurangapura - CBS - Ranjangaon,2026-10-01,6:00 PM,50,49,1,98.0,Peak Rush
+SB-04,Aurangapura - CBS - Ranjangaon,2026-10-01,7:00 PM,50,46,4,92.0,Peak Rush
+SB-04,Aurangapura - CBS - Ranjangaon,2026-10-01,8:00 PM,50,31,19,62.0,Busy
+SB-05,Harsul - CBS - Nakshatrawadi,2026-10-01,7:00 AM,45,35,10,77.8,Rush Hour
+SB-05,Harsul - CBS - Nakshatrawadi,2026-10-01,8:00 AM,45,42,3,93.3,Peak Rush
+SB-05,Harsul - CBS - Nakshatrawadi,2026-10-01,9:00 AM,45,38,7,84.4,Rush Hour
+SB-05,Harsul - CBS - Nakshatrawadi,2026-10-01,12:00 PM,45,24,21,53.3,Busy
+SB-05,Harsul - CBS - Nakshatrawadi,2026-10-01,1:00 PM,45,17,28,37.8,Normal
+SB-05,Harsul - CBS - Nakshatrawadi,2026-10-01,2:00 PM,45,13,32,28.9,Normal
+SB-05,Harsul - CBS - Nakshatrawadi,2026-10-01,5:00 PM,45,38,7,84.4,Rush Hour
+SB-05,Harsul - CBS - Nakshatrawadi,2026-10-01,6:00 PM,45,43,2,95.6,Peak Rush
+SB-05,Harsul - CBS - Nakshatrawadi,2026-10-01,7:00 PM,45,40,5,88.9,Peak Rush
+SB-05,Harsul - CBS - Nakshatrawadi,2026-10-01,8:00 PM,45,26,19,57.8,Busy
+SB-05,Harsul - CBS - Nakshatrawadi,2026-10-02,8:00 AM,45,43,2,95.6,Peak Rush
+SB-05,Harsul - CBS - Nakshatrawadi,2026-10-02,6:00 PM,45,44,1,97.8,Peak Rush
+SB-06,CIDCO - TV Centre - Railway Station,2026-10-01,7:00 AM,40,30,10,75.0,Rush Hour
+SB-06,CIDCO - TV Centre - Railway Station,2026-10-01,8:00 AM,40,38,2,95.0,Peak Rush
+SB-06,CIDCO - TV Centre - Railway Station,2026-10-01,9:00 AM,40,35,5,87.5,Peak Rush
+SB-06,CIDCO - TV Centre - Railway Station,2026-10-01,12:00 PM,40,16,24,40.0,Normal
+SB-06,CIDCO - TV Centre - Railway Station,2026-10-01,1:00 PM,40,12,28,30.0,Normal
+SB-06,CIDCO - TV Centre - Railway Station,2026-10-01,2:00 PM,40,9,31,22.5,Normal
+SB-06,CIDCO - TV Centre - Railway Station,2026-10-01,5:00 PM,40,33,7,82.5,Rush Hour
+SB-06,CIDCO - TV Centre - Railway Station,2026-10-01,6:00 PM,40,39,1,97.5,Peak Rush
+SB-06,CIDCO - TV Centre - Railway Station,2026-10-01,7:00 PM,40,36,4,90.0,Peak Rush
+SB-06,CIDCO - TV Centre - Railway Station,2026-10-01,8:00 PM,40,21,19,52.5,Busy
+SB-07,Aurangapura - Kranti Chowk - Shivajinagar,2026-10-01,7:00 AM,50,38,12,76.0,Rush Hour
+SB-07,Aurangapura - Kranti Chowk - Shivajinagar,2026-10-01,8:00 AM,50,47,3,94.0,Peak Rush
+SB-07,Aurangapura - Kranti Chowk - Shivajinagar,2026-10-01,9:00 AM,50,44,6,88.0,Peak Rush
+SB-07,Aurangapura - Kranti Chowk - Shivajinagar,2026-10-01,12:00 PM,50,26,24,52.0,Busy
+SB-07,Aurangapura - Kranti Chowk - Shivajinagar,2026-10-01,1:00 PM,50,18,32,36.0,Normal
+SB-07,Aurangapura - Kranti Chowk - Shivajinagar,2026-10-01,2:00 PM,50,14,36,28.0,Normal
+SB-07,Aurangapura - Kranti Chowk - Shivajinagar,2026-10-01,5:00 PM,50,42,8,84.0,Rush Hour
+SB-07,Aurangapura - Kranti Chowk - Shivajinagar,2026-10-01,6:00 PM,50,48,2,96.0,Peak Rush
+SB-07,Aurangapura - Kranti Chowk - Shivajinagar,2026-10-01,7:00 PM,50,45,5,90.0,Peak Rush
+SB-07,Aurangapura - Kranti Chowk - Shivajinagar,2026-10-01,8:00 PM,50,29,21,58.0,Busy
+SB-08,CIDCO - Ranjangaon - Jogeshwari,2026-10-01,7:00 AM,45,33,12,73.3,Rush Hour
+SB-08,CIDCO - Ranjangaon - Jogeshwari,2026-10-01,8:00 AM,45,41,4,91.1,Peak Rush
+SB-08,CIDCO - Ranjangaon - Jogeshwari,2026-10-01,9:00 AM,45,38,7,84.4,Rush Hour
+SB-08,CIDCO - Ranjangaon - Jogeshwari,2026-10-01,12:00 PM,45,22,23,48.9,Busy
+SB-08,CIDCO - Ranjangaon - Jogeshwari,2026-10-01,1:00 PM,45,15,30,33.3,Normal
+SB-08,CIDCO - Ranjangaon - Jogeshwari,2026-10-01,2:00 PM,45,11,34,24.4,Normal
+SB-08,CIDCO - Ranjangaon - Jogeshwari,2026-10-01,5:00 PM,45,36,9,80.0,Rush Hour
+SB-08,CIDCO - Ranjangaon - Jogeshwari,2026-10-01,6:00 PM,45,43,2,95.6,Peak Rush
+SB-08,CIDCO - Ranjangaon - Jogeshwari,2026-10-01,7:00 PM,45,40,5,88.9,Peak Rush
+SB-08,CIDCO - Ranjangaon - Jogeshwari,2026-10-01,8:00 PM,45,25,20,55.6,Busy
+SB-09,Chikalthana - Kranti Chowk - CBS,2026-10-01,7:00 AM,40,29,11,72.5,Rush Hour
+SB-09,Chikalthana - Kranti Chowk - CBS,2026-10-01,8:00 AM,40,38,2,95.0,Peak Rush
+SB-09,Chikalthana - Kranti Chowk - CBS,2026-10-01,9:00 AM,40,34,6,85.0,Peak Rush
+SB-09,Chikalthana - Kranti Chowk - CBS,2026-10-01,12:00 PM,40,14,26,35.0,Normal
+SB-09,Chikalthana - Kranti Chowk - CBS,2026-10-01,1:00 PM,40,10,30,25.0,Normal
+SB-09,Chikalthana - Kranti Chowk - CBS,2026-10-01,2:00 PM,40,8,32,20.0,Normal
+SB-09,Chikalthana - Kranti Chowk - CBS,2026-10-01,5:00 PM,40,32,8,80.0,Rush Hour
+SB-09,Chikalthana - Kranti Chowk - CBS,2026-10-01,6:00 PM,40,39,1,97.5,Peak Rush
+SB-09,Chikalthana - Kranti Chowk - CBS,2026-10-01,7:00 PM,40,36,4,90.0,Peak Rush
+SB-09,Chikalthana - Kranti Chowk - CBS,2026-10-01,8:00 PM,40,22,18,55.0,Busy
+SB-10,CIDCO - Railway Station - Waluj,2026-10-01,7:00 AM,50,41,9,82.0,Rush Hour
+SB-10,CIDCO - Railway Station - Waluj,2026-10-01,8:00 AM,50,49,1,98.0,Peak Rush
+SB-10,CIDCO - Railway Station - Waluj,2026-10-01,9:00 AM,50,46,4,92.0,Peak Rush
+SB-10,CIDCO - Railway Station - Waluj,2026-10-01,12:00 PM,50,29,21,58.0,Busy
+SB-10,CIDCO - Railway Station - Waluj,2026-10-01,1:00 PM,50,21,29,42.0,Busy
+SB-10,CIDCO - Railway Station - Waluj,2026-10-01,2:00 PM,50,17,33,34.0,Normal
+SB-10,CIDCO - Railway Station - Waluj,2026-10-01,5:00 PM,50,44,6,88.0,Peak Rush
+SB-10,CIDCO - Railway Station - Waluj,2026-10-01,6:00 PM,50,50,0,100.0,Peak Rush
+SB-10,CIDCO - Railway Station - Waluj,2026-10-01,7:00 PM,50,47,3,94.0,Peak Rush
+SB-10,CIDCO - Railway Station - Waluj,2026-10-01,8:00 PM,50,32,18,64.0,Busy
+SB-01,Railway Station - CBS - Harsul,2026-10-03,7:00 AM,45,36,9,80.0,Rush Hour
+SB-01,Railway Station - CBS - Harsul,2026-10-03,8:00 AM,45,43,2,95.6,Peak Rush
+SB-01,Railway Station - CBS - Harsul,2026-10-03,9:00 AM,45,39,6,86.7,Peak Rush
+SB-01,Railway Station - CBS - Harsul,2026-10-03,12:00 PM,45,21,24,46.7,Busy
+SB-01,Railway Station - CBS - Harsul,2026-10-03,5:00 PM,45,37,8,82.2,Rush Hour
+SB-01,Railway Station - CBS - Harsul,2026-10-03,6:00 PM,45,44,1,97.8,Peak Rush
+SB-02,Aurangapura - CBS - Waluj,2026-10-03,7:00 AM,50,39,11,78.0,Rush Hour
+SB-02,Aurangapura - CBS - Waluj,2026-10-03,8:00 AM,50,48,2,96.0,Peak Rush
+SB-02,Aurangapura - CBS - Waluj,2026-10-03,12:00 PM,50,23,27,46.0,Busy
+SB-02,Aurangapura - CBS - Waluj,2026-10-03,2:00 PM,50,13,37,26.0,Normal
+SB-02,Aurangapura - CBS - Waluj,2026-10-03,6:00 PM,50,48,2,96.0,Peak Rush
+SB-03,Aurangapura - CBS - Hindustan Awas,2026-10-04,7:00 AM,40,31,9,77.5,Rush Hour
+SB-03,Aurangapura - CBS - Hindustan Awas,2026-10-04,8:00 AM,40,39,1,97.5,Peak Rush
+SB-03,Aurangapura - CBS - Hindustan Awas,2026-10-04,12:00 PM,40,17,23,42.5,Busy
+SB-03,Aurangapura - CBS - Hindustan Awas,2026-10-04,5:00 PM,40,33,7,82.5,Rush Hour
+SB-03,Aurangapura - CBS - Hindustan Awas,2026-10-04,6:00 PM,40,39,1,97.5,Peak Rush
+SB-04,Aurangapura - Osmanpura - Deolai,2026-10-05,7:00 AM,50,37,13,74.0,Rush Hour
+SB-04,Aurangapura - Osmanpura - Deolai,2026-10-05,8:00 AM,50,47,3,94.0,Peak Rush
+SB-04,Aurangapura - Osmanpura - Deolai,2026-10-05,12:00 PM,50,26,24,52.0,Busy
+SB-04,Aurangapura - Osmanpura - Deolai,2026-10-05,5:00 PM,50,42,8,84.0,Rush Hour
+SB-04,Aurangapura - Osmanpura - Deolai,2026-10-05,6:00 PM,50,49,1,98.0,Peak Rush
+SB-05,Aurangapura - Chikalthana,2026-10-06,7:00 AM,45,34,11,75.6,Rush Hour
+SB-05,Aurangapura - Chikalthana,2026-10-06,8:00 AM,45,43,2,95.6,Peak Rush
+SB-05,Aurangapura - Chikalthana,2026-10-06,1:00 PM,45,16,29,35.6,Normal
+SB-05,Aurangapura - Chikalthana,2026-10-06,5:00 PM,45,38,7,84.4,Rush Hour
+SB-05,Aurangapura - Chikalthana,2026-10-06,7:00 PM,45,41,4,91.1,Peak Rush
+SB-06,Railway Station - CBS - Shahgunj,2026-10-07,7:00 AM,40,30,10,75.0,Rush Hour
+SB-06,Railway Station - CBS - Shahgunj,2026-10-07,8:00 AM,40,38,2,95.0,Peak Rush
+SB-06,Railway Station - CBS - Shahgunj,2026-10-07,9:00 AM,40,35,5,87.5,Peak Rush
+SB-06,Railway Station - CBS - Shahgunj,2026-10-07,12:00 PM,40,15,25,37.5,Normal
+SB-06,Railway Station - CBS - Shahgunj,2026-10-07,6:00 PM,40,39,1,97.5,Peak Rush
+SB-07,CIDCO - Ranjangaon - Jogeshwari,2026-10-07,7:00 AM,50,36,14,72.0,Rush Hour
+SB-07,CIDCO - Ranjangaon - Jogeshwari,2026-10-07,8:00 AM,50,47,3,94.0,Peak Rush
+SB-07,CIDCO - Ranjangaon - Jogeshwari,2026-10-07,12:00 PM,50,24,26,48.0,Busy
+SB-07,CIDCO - Ranjangaon - Jogeshwari,2026-10-07,6:00 PM,50,48,2,96.0,Peak Rush
+SB-08,Harsul - CBS - Nakshatrawadi,2026-10-02,7:00 AM,45,34,11,75.6,Rush Hour
+SB-08,Harsul - CBS - Nakshatrawadi,2026-10-02,8:00 AM,45,43,2,95.6,Peak Rush
+SB-08,Harsul - CBS - Nakshatrawadi,2026-10-02,12:00 PM,45,20,25,44.4,Busy
+SB-08,Harsul - CBS - Nakshatrawadi,2026-10-02,6:00 PM,45,43,2,95.6,Peak Rush
+SB-09,Aurangapura - CBS - Ranjangaon,2026-10-03,7:00 AM,40,28,12,70.0,Busy
+SB-09,Aurangapura - CBS - Ranjangaon,2026-10-03,8:00 AM,40,39,1,97.5,Peak Rush
+SB-09,Aurangapura - CBS - Ranjangaon,2026-10-03,12:00 PM,40,16,24,40.0,Normal
+SB-09,Aurangapura - CBS - Ranjangaon,2026-10-03,6:00 PM,40,38,2,95.0,Peak Rush
+SB-10,Aurangapura - Kranti Chowk - Shivajinagar,2026-10-04,7:00 AM,50,40,10,80.0,Rush Hour
+SB-10,Aurangapura - Kranti Chowk - Shivajinagar,2026-10-04,8:00 AM,50,49,1,98.0,Peak Rush
+SB-10,Aurangapura - Kranti Chowk - Shivajinagar,2026-10-04,12:00 PM,50,28,22,56.0,Busy
+SB-10,Aurangapura - Kranti Chowk - Shivajinagar,2026-10-04,5:00 PM,50,44,6,88.0,Peak Rush
+SB-10,Aurangapura - Kranti Chowk - Shivajinagar,2026-10-04,6:00 PM,50,50,0,100.0,Peak Rush
