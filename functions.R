@@ -131,11 +131,11 @@ sb_url <- function(table) {
 # Common headers required by every Supabase REST call
 sb_headers <- function(prefer = "return=representation") {
   key <- Sys.getenv("SUPABASE_KEY")
+  
   add_headers(
     apikey        = key,
-    Authorization = paste("Bearer", key),
-    `Content-Type`  = "application/json",
-    Prefer          = prefer
+    `Content-Type` = "application/json",
+    Prefer         = prefer
   )
 }
 
