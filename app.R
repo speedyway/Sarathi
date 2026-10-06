@@ -377,10 +377,6 @@ SARATHI_CSS <- "
   }
 "
 
-# ==============================================================
-#  Named vector: date display -> stored value (for conversion)
-# ==============================================================
-DATE_MAP <- setNames(DATES_STORED, DATES_DISPLAY)
 
 # ==============================================================
 #  UI
@@ -485,8 +481,9 @@ server <- function(input, output, session) {
                           choices = BUS_NUMBERS),
               selectInput("tc_route",  "Route",
                           choices = ROUTES),
-              selectInput("tc_date",   "Date",
-                          choices = DATES_DISPLAY),
+              dateInput("tc_date",   "Date",
+                        value = Sys.Date(),
+                        format = "dd-mm-yyyy"),
               selectInput("tc_timing", "Timing",
                           choices = TIMING_LEVELS)
             ),
@@ -524,8 +521,9 @@ server <- function(input, output, session) {
                           choices = ROUTES)
             ),
             div(
-              selectInput("pub_date",   "Date",
-                          choices = DATES_DISPLAY),
+              dateInput("pub_date",   "Date",
+                        value = Sys.Date(),
+                        format = "dd-mm-yyyy"),
               selectInput("pub_timing", "Timing",
                           choices = TIMING_LEVELS)
             )
@@ -671,12 +669,17 @@ server <- function(input, output, session) {
   save_action <- function() {
     bus    <- input$tc_bus
     route  <- input$tc_route
-    date_d <- DATE_MAP[input$tc_date]   # convert DD-MM-YYYY -> YYYY-MM-DD
+    date_d <- format(input$tc_date, "%Y-%m-%d")
     timing <- input$tc_timing
     occ    <- input$tc_occupied
     cap    <- tc_capacity()
 
     # Validate inputs
+    if (is.null(input$tc_date) || is.na(input$tc_date)) {
+      rv$save_msg <- "Please select a valid date."
+      rv$save_ok  <- FALSE
+      return()
+    }
     if (is.null(occ) || is.na(occ)) {
       rv$save_msg <- "Please enter the number of occupied seats."
       rv$save_ok  <- FALSE
@@ -706,8 +709,9 @@ server <- function(input, output, session) {
     )
 
     if (ok) {
+      date_display <- format(input$tc_date, "%d-%m-%Y")
       rv$save_msg <- paste0("\u2713 Record saved for ", bus,
-                            " on ", input$tc_date, " at ", timing, ".")
+                            " on ", date_display, " at ", timing, ".")
       rv$save_ok  <- TRUE
     } else {
       rv$save_msg <- paste0(
@@ -829,9 +833,15 @@ server <- function(input, output, session) {
   })
 
   observeEvent(input$btn_check, {
+    if (is.null(input$pub_date) || is.na(input$pub_date)) {
+      rv$public_result <- NULL
+      rv$public_msg    <- "Please select a valid date."
+      return()
+    }
+
     bus    <- input$pub_bus
     route  <- input$pub_route
-    date_d <- DATE_MAP[input$pub_date]
+    date_d <- format(input$pub_date, "%Y-%m-%d")
     timing <- input$pub_timing
 
     rv$public_result <- NULL
@@ -849,9 +859,10 @@ server <- function(input, output, session) {
     }
 
     if (!is.data.frame(df) || nrow(df) == 0) {
+      date_display <- format(input$pub_date, "%d-%m-%Y")
       rv$public_msg <- paste0(
         "No occupancy record found for ", bus,
-        " on ", input$pub_date, " at ", timing,
+        " on ", date_display, " at ", timing,
         ". Please try a different combination or check back later.")
     } else {
       rv$public_result <- df

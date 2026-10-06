@@ -36,16 +36,6 @@ ROUTES <- c(
   "CIDCO - Ranjangaon - Jogeshwari"
 )
 
-# Display labels for the UI (DD-MM-YYYY)
-DATES_DISPLAY <- c(
-  "01-10-2026", "02-10-2026", "03-10-2026",
-  "04-10-2026", "05-10-2026", "06-10-2026", "07-10-2026"
-)
-# Stored values (YYYY-MM-DD)
-DATES_STORED <- c(
-  "2026-10-01", "2026-10-02", "2026-10-03",
-  "2026-10-04", "2026-10-05", "2026-10-06", "2026-10-07"
-)
 
 # Timings as an ordered factor (for analysis)
 TIMING_LEVELS <- c(
