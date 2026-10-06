@@ -4,7 +4,6 @@
 
 library(httr)
 library(jsonlite)
-library(digest)
 
 # ------------------------------------------------------------
 # 1. Fixed reference data (stored as vectors / named vector)
@@ -111,15 +110,7 @@ calculate_all <- function(capacity, occupied) {
 }
 
 # ------------------------------------------------------------
-# 3. SHA-256 password hashing (uses digest package)
-# ------------------------------------------------------------
-
-hash_password <- function(plain_text) {
-  digest(plain_text, algo = "sha256", serialize = FALSE)
-}
-
-# ------------------------------------------------------------
-# 4. Supabase connection helpers
+# 3. Supabase connection helpers
 # ------------------------------------------------------------
 
 # Build the base URL for a Supabase REST table endpoint
@@ -131,7 +122,6 @@ sb_url <- function(table) {
 # Common headers required by every Supabase REST call
 sb_headers <- function(prefer = "return=representation") {
   key <- Sys.getenv("SUPABASE_KEY")
-  
   add_headers(
     apikey        = key,
     `Content-Type` = "application/json",
@@ -181,18 +171,14 @@ sb_post <- function(table, body_list, query_params = list(),
 }
 
 # ------------------------------------------------------------
-# 5. Application-level database functions
+# 4. Application-level database functions
 # ------------------------------------------------------------
 
-# Verify ticket collector credentials; returns TRUE if valid
+# Simple Ticket Collector login for the project demo.
+# Login is kept separate from Supabase so the collector can enter the
+# panel even if the database is temporarily unavailable.
 verify_collector <- function(username, password) {
-  hashed <- hash_password(password)
-  rows   <- sb_get("ticket_collectors",
-                   list(username = paste0("eq.", username),
-                        password = paste0("eq.", hashed),
-                        select   = "id"))
-  if (!isTRUE(attr(rows, "request_ok"))) return(NA)
-  is.data.frame(rows) && nrow(rows) > 0
+  username == "collector1" && password == "Sarathi123"
 }
 
 # Look up capacity for a bus number from the buses table
@@ -258,7 +244,7 @@ fetch_all_for_bus <- function(bus_number) {
 }
 
 # ------------------------------------------------------------
-# 6. Rush-hour analysis helpers
+# 5. Rush-hour analysis helpers
 # ------------------------------------------------------------
 
 # Compute mean occupancy % per timing from a data frame
@@ -290,7 +276,7 @@ peak_timing <- function(analysis_df) {
 }
 
 # ------------------------------------------------------------
-# 7. CSV fallback loader
+# 6. CSV fallback loader
 # ------------------------------------------------------------
 
 # Load data.csv as a fallback when DB is unreachable

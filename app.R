@@ -18,7 +18,6 @@
 library(shiny)
 library(httr)
 library(jsonlite)
-library(digest)
 
 source("functions.R")   # load all helper functions and fixed data
 
