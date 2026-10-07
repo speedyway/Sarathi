@@ -197,3 +197,6 @@ rsconnect::writeManifest(appFiles = c("app.R", "functions.R", "data.csv"))
 | **Crowd Status** | `0–40%`: Low \| `41–70%`: Moderate \| `71–85%`: High \| `86–100%`: Very High |
 | **Rush Status** | `Low` → Normal \| `Moderate` → Busy \| `High` → Rush Hour \| `Very High` → Peak Rush |
 | **Rush-Hour Analysis** | Mean occupancy per timing via `tapply()`, ordered factors, and base R bar chart |
+## Technology Used
+
+Sarathi is developed using R Shiny, HTML, CSS and Supabase.
