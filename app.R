@@ -1,29 +1,10 @@
-# ============================================================
-# app.R  –  SARATHI: Smart Bus Occupancy & Rush Hour System
-# ============================================================
-# Steps covered:
-#   1  Skeleton, header, CSS theme
-#   2  Public user UI (dropdowns, result card)
-#   3  Ticket Collector login button + form
-#   4  Ticket Collector panel layout
-#   5  Calculation functions (in functions.R, sourced here)
-#   6  Supabase connection
-#   7  Save occupancy data
-#   8  Retrieve occupancy for public card
-#   9  Rush-hour analysis table
-#  10  Base-R bar chart
-#  11  Validation and friendly error messages
-#  12  Sample-data fallback, cleanup
 
 library(shiny)
 library(httr)
 library(jsonlite)
 
-source("functions.R")   # load all helper functions and fixed data
+source("functions.R")
 
-# ==============================================================
-#  CSS  –  inline, inside app.R as required
-# ==============================================================
 SARATHI_CSS <- "
   :root {
     --page: #F4F6F8;
@@ -378,50 +359,39 @@ SARATHI_CSS <- "
 "
 
 
-# ==============================================================
-#  UI
-# ==============================================================
+
 ui <- fluidPage(
-  # Inject inline CSS
   tags$head(
     tags$style(HTML(SARATHI_CSS)),
     tags$meta(name = "viewport",
               content = "width=device-width, initial-scale=1")
   ),
 
-  # ---- Header ----
   div(class = "sarathi-header",
     div(class = "brand",
       tags$h1("SARATHI"),
       tags$p("Smart Bus Occupancy & Rush Hour Information")
     ),
-    # Login / Logout button (toggled by server logic)
     uiOutput("header_btn")
   ),
 
-  # ---- Main content area (public vs TC panel) ----
   uiOutput("main_content")
 )
 
-# ==============================================================
-#  Server
-# ==============================================================
+
 server <- function(input, output, session) {
 
-  # ---- Reactive values ----
   rv <- reactiveValues(
-    logged_in     = FALSE,   # is TC logged in?
-    show_login    = FALSE,   # is login modal visible?
-    login_msg     = "",      # message on login form
-    public_result = NULL,    # result data frame for public card
-    public_msg    = "",      # message for public panel
-    save_msg      = "",      # message after saving
+    logged_in     = FALSE,
+    show_login    = FALSE,
+    login_msg     = "",
+    public_result = NULL,
+    public_msg    = "",
+    save_msg      = "",
     save_ok       = FALSE
   )
 
-  # =============================================================
-  #  HEADER BUTTON (Login / Logout)
-  # =============================================================
+  
   output$header_btn <- renderUI({
     if (rv$logged_in) {
       actionButton("btn_logout", "Logout",
@@ -433,13 +403,11 @@ server <- function(input, output, session) {
     }
   })
 
-  # Show login modal
   observeEvent(input$btn_show_login, {
     rv$show_login <- TRUE
     rv$login_msg  <- ""
   })
 
-  # Logout
   observeEvent(input$btn_logout, {
     rv$logged_in  <- FALSE
     rv$show_login <- FALSE
@@ -447,12 +415,8 @@ server <- function(input, output, session) {
     rv$save_ok    <- FALSE
   })
 
-  # =============================================================
-  #  MAIN CONTENT SWITCH
-  # =============================================================
   output$main_content <- renderUI({
     if (rv$show_login && !rv$logged_in) {
-      # ---- LOGIN FORM ----
       div(class = "main-wrap",
         div(class = "card form-section",
           tags$h3("Ticket Collector Login"),
@@ -464,18 +428,15 @@ server <- function(input, output, session) {
             actionButton("btn_login", "Login", class = "btn-primary-sarathi"),
             actionButton("btn_cancel_login", "Cancel", class = "btn-logout")
           ),
-          # Login message
           uiOutput("login_msg_ui")
         )
       )
 
     } else if (rv$logged_in) {
-      # ---- TICKET COLLECTOR PANEL ----
       div(class = "main-wrap",
         div(class = "card",
           tags$h3("SARATHI - Ticket Collector Panel"),
           div(class = "two-col",
-            # Left column: inputs
             div(
               selectInput("tc_bus",    "Bus Number",
                           choices = BUS_NUMBERS),
@@ -487,11 +448,9 @@ server <- function(input, output, session) {
               selectInput("tc_timing", "Timing",
                           choices = TIMING_LEVELS)
             ),
-            # Right column: capacity + occupied + live preview
             div(
               numericInput("tc_occupied", "Occupied Seats",
                            value = NA, min = 0, step = 1),
-              # Live preview box
               uiOutput("tc_preview"),
               tags$br(),
               div(class = "panel-actions",
@@ -507,10 +466,7 @@ server <- function(input, output, session) {
       )
 
     } else {
-      # ---- PUBLIC PAGE ----
       div(class = "main-wrap",
-
-        # Check Occupancy form
         div(class = "card",
           tags$h3("Check Bus Occupancy"),
           div(class = "two-col",
@@ -533,7 +489,6 @@ server <- function(input, output, session) {
           uiOutput("public_result_ui")
         ),
 
-        # Analysis section (chart + table)
         div(class = "card",
           tags$h3("Average Occupancy by Timing"),
           tags$p(class = "analysis-description",
@@ -546,9 +501,7 @@ server <- function(input, output, session) {
     }
   })
 
-  # =============================================================
-  #  LOGIN LOGIC
-  # =============================================================
+  
   output$login_msg_ui <- renderUI({
     if (nchar(rv$login_msg) == 0) return(NULL)
     div(class = "msg-error", rv$login_msg)
@@ -558,7 +511,6 @@ server <- function(input, output, session) {
     un <- trimws(input$tc_username)
     pw <- input$tc_password
 
-    # Basic validation
     if (nchar(un) == 0 || nchar(pw) == 0) {
       rv$login_msg <- "Please enter both username and password."
       return()
@@ -585,10 +537,7 @@ server <- function(input, output, session) {
     rv$login_msg  <- ""
   })
 
-  # =============================================================
-  #  TICKET COLLECTOR – LIVE PREVIEW
-  # =============================================================
-  # Reactive: get capacity for selected bus
+  
   tc_capacity <- reactive({
     req(input$tc_bus)
     cap <- tryCatch(get_capacity(input$tc_bus), error = function(e) NA)
@@ -600,7 +549,6 @@ server <- function(input, output, session) {
     cap <- tc_capacity()
     occ <- input$tc_occupied
 
-    # Show capacity always; rest only when occupied is entered
     if (is.null(occ) || is.na(occ)) {
       return(div(class = "preview-box",
         tags$p(tags$span(class = "preview-label", "Capacity: "),
@@ -608,7 +556,6 @@ server <- function(input, output, session) {
       ))
     }
 
-    # Validation
     if (occ < 0) {
       return(div(class = "preview-box msg-error",
         "Occupied seats cannot be negative."))
@@ -626,7 +573,6 @@ server <- function(input, output, session) {
     occ <- as.integer(occ)
     res <- calculate_all(cap, occ)
 
-    # Choose badge class
     crowd_badge <- switch(res$crowd,
       "Low"       = "badge badge-low",
       "Moderate"  = "badge badge-moderate",
@@ -657,9 +603,7 @@ server <- function(input, output, session) {
     )
   })
 
-  # =============================================================
-  #  TICKET COLLECTOR – SAVE
-  # =============================================================
+  
   output$save_msg_ui <- renderUI({
     if (nchar(rv$save_msg) == 0) return(NULL)
     cls <- if (rv$save_ok) "msg-success" else "msg-error"
@@ -674,7 +618,6 @@ server <- function(input, output, session) {
     occ    <- input$tc_occupied
     cap    <- tc_capacity()
 
-    # Validate inputs
     if (is.null(input$tc_date) || is.na(input$tc_date)) {
       rv$save_msg <- "Please select a valid date."
       rv$save_ok  <- FALSE
@@ -703,20 +646,27 @@ server <- function(input, output, session) {
     }
 
     occ <- as.integer(occ)
-    ok <- tryCatch(
+    result <- tryCatch(
       save_occupancy(bus, route, date_d, timing, cap, occ),
-      error = function(e) FALSE
+      error = function(e) {
+        list(ok = FALSE, status = NA_integer_,
+             body = conditionMessage(e))
+      }
     )
 
-    if (ok) {
+    if (isTRUE(result$ok)) {
       date_display <- format(input$tc_date, "%d-%m-%Y")
       rv$save_msg <- paste0("\u2713 Record saved for ", bus,
                             " on ", date_display, " at ", timing, ".")
       rv$save_ok  <- TRUE
     } else {
-      rv$save_msg <- paste0(
-        "Could not save the record. Please check your connection",
-        " and try again.")
+      status <- if (is.na(result$status)) {
+        "no HTTP response"
+      } else {
+        paste("HTTP", result$status)
+      }
+      rv$save_msg <- paste0("Supabase save failed (", status, "): ",
+                            result$body)
       rv$save_ok  <- FALSE
     }
   }
@@ -728,9 +678,9 @@ server <- function(input, output, session) {
     rv$save_ok   <- FALSE
   })
 
-  # =============================================================
-  #  PUBLIC – CHECK OCCUPANCY
-  # =============================================================
+  
+  
+  
   output$public_result_ui <- renderUI({
     if (is.null(rv$public_result) && nchar(rv$public_msg) == 0)
       return(NULL)
@@ -740,9 +690,9 @@ server <- function(input, output, session) {
     }
 
     df  <- rv$public_result
-    row <- df[1, ]   # one matching record
+    row <- df[1, ]   
 
-    # Build status badges
+    
     crowd_badge <- switch(as.character(row$rush_status),
       "Normal"    = "badge badge-normal",
       "Busy"      = "badge badge-busy",
@@ -750,7 +700,7 @@ server <- function(input, output, session) {
       "Peak Rush" = "badge badge-peak",
       "badge"
     )
-    # Derive crowd status from rush status (reverse map)
+    
     crowd_label <- switch(as.character(row$rush_status),
       "Normal"    = "Low",
       "Busy"      = "Moderate",
@@ -766,7 +716,7 @@ server <- function(input, output, session) {
       "badge"
     )
 
-    # Format date for display (YYYY-MM-DD -> DD-MM-YYYY)
+    
     date_display <- format(as.Date(row$travel_date), "%d-%m-%Y")
 
     div(class = "result-card",
@@ -847,13 +797,13 @@ server <- function(input, output, session) {
     rv$public_result <- NULL
     rv$public_msg    <- ""
 
-    # Try DB first, fall back to CSV
+    
     df <- tryCatch(
       fetch_occupancy(bus, route, date_d, timing),
       error = function(e) data.frame()
     )
 
-    # Fallback to CSV if DB returned nothing
+    
     if (!is.data.frame(df) || nrow(df) == 0) {
       df <- fetch_occupancy_csv(bus, route, date_d, timing)
     }
@@ -869,10 +819,10 @@ server <- function(input, output, session) {
     }
   })
 
-  # =============================================================
-  #  ANALYSIS – timing chart and table
-  #  (triggered by the public bus selector changing)
-  # =============================================================
+  
+  
+  
+  
   analysis_data <- reactive({
     req(input$pub_bus)
     df <- tryCatch(
@@ -888,7 +838,7 @@ server <- function(input, output, session) {
   output$timing_chart <- renderPlot({
     adf <- analysis_data()
     if (is.null(adf) || nrow(adf) == 0) {
-      # Empty placeholder
+      
       par(mar = c(1,1,2,1))
       plot.new()
       title("No data available for this bus yet.", cex.main = 1,
@@ -896,7 +846,7 @@ server <- function(input, output, session) {
       return()
     }
 
-    # Colours by avg occupancy level
+    
     bar_cols <- sapply(adf$avg_pct, function(p) {
       if (p <= 40)      "#27633A"
       else if (p <= 70) "#805B10"
@@ -913,14 +863,14 @@ server <- function(input, output, session) {
       ylim       = c(0, 110),
       ylab       = "Avg Occupancy (%)",
       xlab       = "Timing",
-      las        = 2,           # rotate x labels
+      las        = 2,           
       cex.names  = 0.9,
       cex.axis   = 0.95,
       main       = paste("Average Occupancy % by Timing –", input$pub_bus),
       cex.main   = 1,
       col.main   = "#0B4F8A"
     )
-    # Add value labels on bars
+    
     text(bp, adf$avg_pct + 3,
          labels = paste0(adf$avg_pct, "%"),
          cex = 0.9, col = "#1F2933")
@@ -930,7 +880,7 @@ server <- function(input, output, session) {
     adf <- analysis_data()
     if (is.null(adf) || nrow(adf) == 0) return(NULL)
 
-    # Build HTML table rows
+    
     rows_html <- ""
     for (i in seq_len(nrow(adf))) {
       crowd <- as.character(adf$crowd_status[i])
@@ -963,15 +913,14 @@ server <- function(input, output, session) {
     adf <- analysis_data()
     if (is.null(adf) || nrow(adf) == 0) return(NULL)
     pt <- peak_timing(adf)
-    div(class = "msg-info",
-        class = "msg-info peak-note",
+    div(class = "msg-info peak-note",
         paste0("The generally most crowded timing for ",
                input$pub_bus, " is ", pt, "."))
   })
 
-} # end server
+} 
 
-# ==============================================================
-#  Launch
-# ==============================================================
+
+
+
 shinyApp(ui = ui, server = server)

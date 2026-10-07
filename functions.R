@@ -1,16 +1,8 @@
-# ============================================================
-# functions.R  –  SARATHI helper functions and fixed data
-# ============================================================
-
 library(httr)
 library(jsonlite)
-
-# ------------------------------------------------------------
-# 1. Fixed reference data (stored as vectors / named vector)
-# ------------------------------------------------------------
+library(digest)
 
 BUS_NUMBERS <- sprintf("SB-%02d", 1:10)
-# Give each bus a capacity (40, 45, or 50 seats)
 BUS_CAPACITY <- c(
   "SB-01" = 45, "SB-02" = 50, "SB-03" = 40,
   "SB-04" = 50, "SB-05" = 45, "SB-06" = 40,
@@ -36,32 +28,22 @@ ROUTES <- c(
   "CIDCO - Ranjangaon - Jogeshwari"
 )
 
-
-# Timings as an ordered factor (for analysis)
 TIMING_LEVELS <- c(
   "7:00 AM", "8:00 AM", "9:00 AM",
   "12:00 PM", "1:00 PM", "2:00 PM",
   "5:00 PM", "6:00 PM", "7:00 PM", "8:00 PM"
 )
 
-# Crowd status ordered factor levels
 CROWD_LEVELS <- c("Low", "Moderate", "High", "Very High")
 
-# ------------------------------------------------------------
-# 2. Core calculation functions
-# ------------------------------------------------------------
-
-# Returns number of vacant seats
 calculate_vacancy <- function(capacity, occupied) {
   capacity - occupied
 }
 
-# Returns occupancy percentage, rounded to 1 decimal place
 calculate_occupancy <- function(capacity, occupied) {
   round((occupied / capacity) * 100, 1)
 }
 
-# Returns crowd status string based on occupancy %
 get_crowd_status <- function(pct) {
   if (pct <= 40) {
     "Low"
@@ -74,7 +56,6 @@ get_crowd_status <- function(pct) {
   }
 }
 
-# Returns rush status string based on crowd status
 get_rush_status <- function(crowd) {
   if (crowd == "Low") {
     "Normal"
@@ -87,7 +68,6 @@ get_rush_status <- function(crowd) {
   }
 }
 
-# Convenience: compute all fields from capacity + occupied
 calculate_all <- function(capacity, occupied) {
   vacant      <- calculate_vacancy(capacity, occupied)
   pct         <- calculate_occupancy(capacity, occupied)
@@ -99,17 +79,12 @@ calculate_all <- function(capacity, occupied) {
   )
 }
 
-# ------------------------------------------------------------
-# 3. Supabase connection helpers
-# ------------------------------------------------------------
 
-# Build the base URL for a Supabase REST table endpoint
 sb_url <- function(table) {
   base <- sub("/+$", "", Sys.getenv("SUPABASE_URL"))
   paste0(base, "/rest/v1/", table)
 }
 
-# Common headers required by every Supabase REST call
 sb_headers <- function(prefer = "return=representation") {
   key <- Sys.getenv("SUPABASE_KEY")
   add_headers(
@@ -119,7 +94,6 @@ sb_headers <- function(prefer = "return=representation") {
   )
 }
 
-# GET rows from a table; returns a data frame (or empty df on error)
 sb_get <- function(table, query_params = list()) {
   if (nchar(Sys.getenv("SUPABASE_URL")) == 0 ||
       nchar(Sys.getenv("SUPABASE_KEY")) == 0) {
@@ -140,12 +114,35 @@ sb_get <- function(table, query_params = list()) {
   }, error = function(e) structure(data.frame(), request_ok = FALSE))
 }
 
-# POST a new row; returns TRUE on success
 sb_post <- function(table, body_list, query_params = list(),
                     prefer = "return=representation") {
-  if (nchar(Sys.getenv("SUPABASE_URL")) == 0 ||
-      nchar(Sys.getenv("SUPABASE_KEY")) == 0) {
-    return(FALSE)
+  missing_config <- c(
+    if (nchar(Sys.getenv("SUPABASE_URL")) == 0) "SUPABASE_URL",
+    if (nchar(Sys.getenv("SUPABASE_KEY")) == 0) "SUPABASE_KEY"
+  )
+  if (length(missing_config) > 0) {
+    return(list(
+      ok = FALSE,
+      status = NA_integer_,
+      body = paste(
+        "Request not sent; missing environment variable(s):",
+        paste(missing_config, collapse = ", ")
+      )
+    ))
+  }
+
+  redact_error <- function(message) {
+    message <- as.character(message)
+    key <- Sys.getenv("SUPABASE_KEY")
+    if (nzchar(key)) {
+      message <- gsub(key, "[REDACTED]", message, fixed = TRUE)
+    }
+    gsub(
+      "(?i)(apikey|api[_-]?key|authorization|supabase[_-]?key|secret|password|credential|access[_-]?token|refresh[_-]?token)([\"']?\\s*[:=]\\s*[\"']?)[^\"'\\r\\n,}]+",
+      "\\1\\2[REDACTED]",
+      message,
+      perl = TRUE
+    )
   }
 
   tryCatch({
@@ -156,23 +153,40 @@ sb_post <- function(table, body_list, query_params = list(),
       body = charToRaw(as.character(toJSON(list(body_list), auto_unbox = TRUE))),
       encode = "raw"
     )
-    status_code(resp) %in% c(200, 201)
-  }, error = function(e) FALSE)
+    status <- status_code(resp)
+    ok <- status %in% c(200, 201)
+    response_body <- content(resp, "text", encoding = "UTF-8")
+    if (!ok) {
+      response_body <- redact_error(response_body)
+      if (!nzchar(response_body)) {
+        response_body <- "(empty response body)"
+      }
+    }
+    list(
+      ok = ok,
+      status = status,
+      body = response_body
+    )
+  }, error = function(e) {
+    list(
+      ok = FALSE,
+      status = NA_integer_,
+      body = redact_error(conditionMessage(e))
+    )
+  })
 }
 
-# ------------------------------------------------------------
-# 4. Application-level database functions
-# ------------------------------------------------------------
 
-# Simple Ticket Collector login for the project demo.
-# Login is kept separate from Supabase so the collector can enter the
-# panel even if the database is temporarily unavailable.
 verify_collector <- function(username, password) {
-  username == "collector1" && password == "Sarathi123"
+  if (!is.character(username) || !is.character(password)) {
+    return(FALSE)
+  }
+
+  expected_hash <- digest("Sarathi123", algo = "sha256", serialize = FALSE)
+  username == "collector1" &&
+    digest(password, algo = "sha256", serialize = FALSE) == expected_hash
 }
 
-# Look up capacity for a bus number from the buses table
-# Falls back to BUS_CAPACITY vector if DB unreachable
 get_capacity <- function(bus_number) {
   rows <- sb_get("buses",
                  list(bus_number = paste0("eq.", bus_number),
@@ -184,10 +198,8 @@ get_capacity <- function(bus_number) {
   }
 }
 
-# Save or update an occupancy record using the unique key
 save_occupancy <- function(bus_number, route, travel_date,
                            timing, capacity, occupied) {
-  # Calculate derived fields
   res <- calculate_all(capacity, occupied)
 
   body <- list(
@@ -210,7 +222,6 @@ save_occupancy <- function(bus_number, route, travel_date,
   )
 }
 
-# Fetch one occupancy record for the public result card
 fetch_occupancy <- function(bus_number, route, travel_date, timing) {
   sb_get("occupancy_records", list(
     bus_number  = paste0("eq.", bus_number),
@@ -225,7 +236,6 @@ fetch_occupancy <- function(bus_number, route, travel_date, timing) {
   ))
 }
 
-# Fetch all records for a bus (for the analysis chart)
 fetch_all_for_bus <- function(bus_number) {
   sb_get("occupancy_records", list(
     bus_number = paste0("eq.", bus_number),
@@ -233,21 +243,14 @@ fetch_all_for_bus <- function(bus_number) {
   ))
 }
 
-# ------------------------------------------------------------
-# 5. Rush-hour analysis helpers
-# ------------------------------------------------------------
-
-# Compute mean occupancy % per timing from a data frame
 mean_by_timing <- function(df) {
   if (!is.data.frame(df) || nrow(df) == 0) return(NULL)
-  # Use tapply to get means, then convert to data frame
   means <- tapply(df$occupancy_percentage, df$timing, mean, na.rm = TRUE)
   result <- data.frame(
     timing  = names(means),
     avg_pct = round(as.numeric(means), 1),
     stringsAsFactors = FALSE
   )
-  # Sort by the fixed timing order (treat timing as ordered factor)
   result$timing <- factor(result$timing,
                           levels = TIMING_LEVELS, ordered = TRUE)
   result$crowd_status <- factor(
@@ -259,17 +262,12 @@ mean_by_timing <- function(df) {
   result
 }
 
-# Returns the timing with the highest average occupancy
 peak_timing <- function(analysis_df) {
   if (is.null(analysis_df) || nrow(analysis_df) == 0) return("N/A")
   analysis_df$timing[which.max(analysis_df$avg_pct)]
 }
 
-# ------------------------------------------------------------
-# 6. CSV fallback loader
-# ------------------------------------------------------------
 
-# Load data.csv as a fallback when DB is unreachable
 load_csv_fallback <- function() {
   path <- "data.csv"
   if (file.exists(path)) {
@@ -280,7 +278,6 @@ load_csv_fallback <- function() {
   }
 }
 
-# Fetch occupancy from CSV fallback
 fetch_occupancy_csv <- function(bus_number, route, travel_date, timing) {
   df <- load_csv_fallback()
   if (nrow(df) == 0) return(data.frame())
@@ -290,7 +287,6 @@ fetch_occupancy_csv <- function(bus_number, route, travel_date, timing) {
      df$timing      == timing, ]
 }
 
-# Fetch all records for a bus from CSV fallback
 fetch_all_for_bus_csv <- function(bus_number) {
   df <- load_csv_fallback()
   if (nrow(df) == 0) return(data.frame())
