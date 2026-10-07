@@ -236,38 +236,6 @@ fetch_occupancy <- function(bus_number, route, travel_date, timing) {
   ))
 }
 
-fetch_all_for_bus <- function(bus_number) {
-  sb_get("occupancy_records", list(
-    bus_number = paste0("eq.", bus_number),
-    select     = "timing,occupancy_percentage"
-  ))
-}
-
-mean_by_timing <- function(df) {
-  if (!is.data.frame(df) || nrow(df) == 0) return(NULL)
-  means <- tapply(df$occupancy_percentage, df$timing, mean, na.rm = TRUE)
-  result <- data.frame(
-    timing  = names(means),
-    avg_pct = round(as.numeric(means), 1),
-    stringsAsFactors = FALSE
-  )
-  result$timing <- factor(result$timing,
-                          levels = TIMING_LEVELS, ordered = TRUE)
-  result$crowd_status <- factor(
-    vapply(result$avg_pct, get_crowd_status, character(1)),
-    levels = CROWD_LEVELS,
-    ordered = TRUE
-  )
-  result <- result[order(result$timing), ]
-  result
-}
-
-peak_timing <- function(analysis_df) {
-  if (is.null(analysis_df) || nrow(analysis_df) == 0) return("N/A")
-  analysis_df$timing[which.max(analysis_df$avg_pct)]
-}
-
-
 load_csv_fallback <- function() {
   path <- "data.csv"
   if (file.exists(path)) {
@@ -285,11 +253,4 @@ fetch_occupancy_csv <- function(bus_number, route, travel_date, timing) {
      df$route       == route       &
      df$travel_date == travel_date &
      df$timing      == timing, ]
-}
-
-fetch_all_for_bus_csv <- function(bus_number) {
-  df <- load_csv_fallback()
-  if (nrow(df) == 0) return(data.frame())
-  df[df$bus_number == bus_number,
-     c("timing", "occupancy_percentage")]
 }

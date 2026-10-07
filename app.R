@@ -216,12 +216,6 @@ SARATHI_CSS <- "
     flex-wrap: wrap;
     gap: 16px;
   }
-  .analysis-description {
-    margin: 0 0 16px;
-    color: var(--secondary);
-    font-size: 16px;
-  }
-  .peak-note { margin-top: 16px; }
   .shiny-input-container {
     width: 100%;
     max-width: 100%;
@@ -279,26 +273,6 @@ SARATHI_CSS <- "
     font-size: 16px;
   }
 
-  .analysis-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 16px;
-    font-size: 16px;
-  }
-  .analysis-table th {
-    padding: 12px 16px;
-    background: var(--primary);
-    color: var(--card);
-    text-align: left;
-    font-weight: 500;
-  }
-  .analysis-table td {
-    padding: 12px 16px;
-    border-bottom: 1px solid var(--border);
-    color: var(--text);
-  }
-  .analysis-table tr:last-child td { border-bottom: none; }
-
   .preview-box {
     margin-top: 16px;
     padding: 16px;
@@ -352,9 +326,6 @@ SARATHI_CSS <- "
     }
     .result-row { align-items: flex-start; flex-direction: column; gap: 4px; }
     .result-label { flex: initial; }
-    .analysis-table { table-layout: fixed; }
-    .analysis-table th, .analysis-table td { padding: 8px 4px; font-size: 15px; }
-    .analysis-table .badge { padding: 3px 4px; font-size: 13px; }
   }
 "
 
@@ -487,15 +458,6 @@ server <- function(input, output, session) {
           actionButton("btn_check", "Check Occupancy",
                        class = "btn-primary-sarathi"),
           uiOutput("public_result_ui")
-        ),
-
-        div(class = "card",
-          tags$h3("Average Occupancy by Timing"),
-          tags$p(class = "analysis-description",
-            "Average occupancy % for the selected bus across all available records."),
-          plotOutput("timing_chart", height = "340px"),
-          uiOutput("analysis_table_ui"),
-          uiOutput("peak_timing_ui")
         )
       )
     }
@@ -817,105 +779,6 @@ server <- function(input, output, session) {
     } else {
       rv$public_result <- df
     }
-  })
-
-  
-  
-  
-  
-  analysis_data <- reactive({
-    req(input$pub_bus)
-    df <- tryCatch(
-      fetch_all_for_bus(input$pub_bus),
-      error = function(e) data.frame()
-    )
-    if (!is.data.frame(df) || nrow(df) == 0) {
-      df <- fetch_all_for_bus_csv(input$pub_bus)
-    }
-    mean_by_timing(df)
-  })
-
-  output$timing_chart <- renderPlot({
-    adf <- analysis_data()
-    if (is.null(adf) || nrow(adf) == 0) {
-      
-      par(mar = c(1,1,2,1))
-      plot.new()
-      title("No data available for this bus yet.", cex.main = 1,
-            col.main = "#52606D")
-      return()
-    }
-
-    
-    bar_cols <- sapply(adf$avg_pct, function(p) {
-      if (p <= 40)      "#27633A"
-      else if (p <= 70) "#805B10"
-      else if (p <= 85) "#91451D"
-      else              "#8B3030"
-    })
-
-    par(mar = c(4, 4, 2, 1), bg = "transparent")
-    bp <- barplot(
-      adf$avg_pct,
-      names.arg  = as.character(adf$timing),
-      col        = bar_cols,
-      border     = NA,
-      ylim       = c(0, 110),
-      ylab       = "Avg Occupancy (%)",
-      xlab       = "Timing",
-      las        = 2,           
-      cex.names  = 0.9,
-      cex.axis   = 0.95,
-      main       = paste("Average Occupancy % by Timing –", input$pub_bus),
-      cex.main   = 1,
-      col.main   = "#0B4F8A"
-    )
-    
-    text(bp, adf$avg_pct + 3,
-         labels = paste0(adf$avg_pct, "%"),
-         cex = 0.9, col = "#1F2933")
-  })
-
-  output$analysis_table_ui <- renderUI({
-    adf <- analysis_data()
-    if (is.null(adf) || nrow(adf) == 0) return(NULL)
-
-    
-    rows_html <- ""
-    for (i in seq_len(nrow(adf))) {
-      crowd <- as.character(adf$crowd_status[i])
-      badge_cls <- switch(crowd,
-        "Low"       = "badge badge-low",
-        "Moderate"  = "badge badge-moderate",
-        "High"      = "badge badge-high",
-        "Very High" = "badge badge-veryhigh", "badge"
-      )
-      rows_html <- paste0(rows_html,
-        "<tr>",
-        "<td>", as.character(adf$timing[i]), "</td>",
-        "<td>", adf$avg_pct[i], "%</td>",
-        "<td><span class='", badge_cls, "'>", crowd, "</span></td>",
-        "</tr>"
-      )
-    }
-
-    HTML(paste0(
-      "<table class='analysis-table'>",
-      "<thead><tr>",
-      "<th>Timing</th><th>Avg Occupancy %</th><th>Crowd Level</th>",
-      "</tr></thead><tbody>",
-      rows_html,
-      "</tbody></table>"
-    ))
-  })
-
-  output$peak_timing_ui <- renderUI({
-    adf <- analysis_data()
-    if (is.null(adf) || nrow(adf) == 0) return(NULL)
-    pt <- peak_timing(adf)
-    div(class = "msg-info peak-note",
-        paste0("The generally most crowded timing for ",
-               input$pub_bus, " is ", pt, "."))
   })
 
 } 
