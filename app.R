@@ -7,24 +7,25 @@ source("functions.R")
 
 SARATHI_CSS <- "
   :root {
-    --page: #F4F6F8;
+    --page: #F7F5FA;
     --card: #FFFFFF;
-    --primary: #0B4F8A;
-    --accent: #0F8B8D;
-    --text: #1F2933;
-    --secondary: #52606D;
-    --border: #D9E0E5;
-    --low-bg: #E5F3E8;
-    --low-text: #27633A;
-    --moderate-bg: #FFF3D6;
-    --moderate-text: #805B10;
-    --high-bg: #FCE9DB;
-    --high-text: #91451D;
-    --veryhigh-bg: #F9E1E1;
-    --veryhigh-text: #8B3030;
-    --info-bg: #E8F0F7;
-    --error-bg: #F9E8E8;
-    --success-bg: #E5F3E8;
+    --primary: #6C3FC5;
+    --primary-dark: #4B238E;
+    --accent: #8B5CF6;
+    --text: #24212B;
+    --secondary: #625B6D;
+    --border: #E2DDEC;
+    --low-bg: #EAF7EF;
+    --low-text: #267044;
+    --moderate-bg: #FFF5DD;
+    --moderate-text: #8A6415;
+    --high-bg: #FCE8E8;
+    --high-text: #9A3838;
+    --veryhigh-bg: #F7DDE5;
+    --veryhigh-text: #8D2444;
+    --info-bg: #F3EEFF;
+    --error-bg: #FDEBEC;
+    --success-bg: #EAF7EF;
   }
 
   * { box-sizing: border-box; }
@@ -42,13 +43,14 @@ SARATHI_CSS <- "
   .sarathi-header {
     width: 100%;
     min-height: 96px;
-    background: var(--primary);
+    background: linear-gradient(110deg, #4B238E 0%, #6C3FC5 65%, #7C4DDB 100%);
     color: var(--card);
     padding: 16px 32px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 24px;
+    box-shadow: 0 2px 8px rgba(75, 35, 142, 0.16);
   }
   .sarathi-header .brand { line-height: 1.35; }
   .sarathi-header .brand h1 {
@@ -73,13 +75,15 @@ SARATHI_CSS <- "
     line-height: 1.4;
     box-shadow: none;
   }
-  .btn-primary-sarathi {
+  .btn-primary-sarathi, .btn-teal {
     background: var(--primary);
     color: var(--card);
+    border-color: var(--primary);
+    transition: background-color 0.15s ease, border-color 0.15s ease;
   }
-  .btn-teal {
-    background: var(--accent);
-    border-color: var(--accent);
+  .btn-primary-sarathi:hover, .btn-teal:hover {
+    background: var(--primary-dark);
+    border-color: var(--primary-dark);
     color: var(--card);
   }
   .btn-logout {
@@ -104,8 +108,8 @@ SARATHI_CSS <- "
     padding: 30px;
     background: var(--card);
     border: 1px solid var(--border);
-    border-radius: 7px;
-    box-shadow: 0 1px 3px rgba(31, 41, 51, 0.04);
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(36, 33, 43, 0.05);
   }
   .card h3 {
     margin: 0 0 24px;
@@ -121,7 +125,9 @@ SARATHI_CSS <- "
     padding: 24px;
     background: var(--card);
     border: 1px solid var(--border);
-    border-radius: 7px;
+    border-radius: 12px;
+    border-left: 4px solid var(--primary);
+    box-shadow: 0 2px 10px rgba(36, 33, 43, 0.05);
   }
   .result-card h3 {
     margin: 0 0 16px;
@@ -232,14 +238,19 @@ SARATHI_CSS <- "
     min-height: 50px;
     padding: 10px 14px;
     border: 1px solid var(--border);
-    border-radius: 6px;
+    border-radius: 7px;
     background: var(--card);
     color: var(--text);
     font-family: inherit;
     font-size: 17px;
     box-shadow: none;
   }
-  select:focus, input:focus, button:focus, .btn:focus {
+  select:focus, input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.14);
+  }
+  button:focus, .btn:focus {
     outline: 2px solid var(--accent);
     outline-offset: 2px;
     box-shadow: none;
